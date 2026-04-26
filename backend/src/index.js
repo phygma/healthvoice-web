@@ -6,7 +6,7 @@ const path = require('path');
 const fs = require('fs-extra');
 
 const healthRoute = require('./routes/health.route');
-
+const translateRoute = require('./routes/translate.route');
 const app = express();
 
 // Ensure uploads directory exists
@@ -23,6 +23,7 @@ app.use('/audio', express.static(path.join(__dirname, '../uploads')));
 
 // Routes
 app.use('/api/health', healthRoute);
+app.use('/api/translate', translateRoute);
 
 // 404 handler — anything that didn't match a route
 app.use((req, res) => {
