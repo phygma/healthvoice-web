@@ -27,6 +27,7 @@ model HealthRecord {
   patientName     String?
   workerName      String?
   userId          String?
+  diagnosis       Json? 
   user            User?    @relation(fields: [userId], references: [id])
   createdAt       DateTime @default(now())
   wer             Float?
