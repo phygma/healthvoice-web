@@ -5,8 +5,10 @@ const morgan = require('morgan');
 const path = require('path');
 const fs = require('fs-extra');
 
+
 const healthRoute = require('./routes/health.route');
 const translateRoute = require('./routes/translate.route');
+const recordsRoute = require('./routes/records.route');
 const app = express();
 
 // Ensure uploads directory exists
@@ -22,8 +24,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/audio', express.static(path.join(__dirname, '../uploads')));
 
 // Routes
-app.use('/api/health', healthRoute);
+app.use('/api/health',    healthRoute);
 app.use('/api/translate', translateRoute);
+app.use('/api/records',   recordsRoute);
 
 // 404 handler — anything that didn't match a route
 app.use((req, res) => {
