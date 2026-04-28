@@ -7,6 +7,15 @@ const path = require('path');
 const ML_URL = process.env.ML_SERVICE_URL || 'http://localhost:8000';
 const USE_MOCK = process.env.USE_MOCK_ML === 'true';
 
+// Shared axios instance with ngrok header
+// Bypasses ngrok's browser warning page on free tier
+const mlAxios = axios.create({
+  baseURL: ML_URL,
+  headers: {
+    'ngrok-skip-browser-warning': 'true',
+  },
+});
+
 // ─── MOCK DATA ─────────────────────────────────────────────────────
 const MOCK_TRANSCRIPTIONS = {
   hi: 'मुझे कल से बुखार है और सिर में दर्द हो रहा है।',
@@ -42,7 +51,7 @@ exports.runASR = async (audioFilePath, lang) => {
   form.append('file', fs.createReadStream(audioFilePath));
   form.append('lang', lang);
 
-  const response = await axios.post(`${ML_URL}/asr`, form, {
+  const response = await mlAxios.post('/asr', form, {
     headers: form.getHeaders(),
     timeout: 30000,
   });
@@ -66,7 +75,7 @@ exports.runNMT = async (text, sourceLang, targetLang) => {
     };
   }
 
-  const response = await axios.post(`${ML_URL}/translate`, {
+  const response = await mlAxios.post('/translate', {
     text, sourceLang, targetLang,
   }, { timeout: 15000 });
 
@@ -94,7 +103,7 @@ exports.runTTS = async (text, lang) => {
     };
   }
 
-  const response = await axios.post(`${ML_URL}/tts`, {
+  const response = await mlAxios.post('/tts', {
     text, lang,
   }, { timeout: 15000 });
 
@@ -109,7 +118,7 @@ exports.runTTS = async (text, lang) => {
 exports.checkMLHealth = async () => {
   if (USE_MOCK) return { status: 'mocked', up: true };
   try {
-    const r = await axios.get(`${ML_URL}/health`, { timeout: 2000 });
+    const r = await mlAxios.get('/health', { timeout: 5000 });
     return { status: 'up', up: true, data: r.data };
   } catch {
     return { status: 'down', up: false };
