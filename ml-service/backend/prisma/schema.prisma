@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  name        String
+  role        String   @default("worker")
+  facilityId  String?
+  createdAt   DateTime @default(now())
+  records     HealthRecord[]
+}
+
+model HealthRecord {
+  id              String   @id @default(cuid())
+  originalText    String
+  translatedText  String
+  sourceLang      String
+  targetLang      String
+  audioInputUrl   String?
+  audioOutputUrl  String?
+  patientName     String?
+  workerName      String?
+  userId          String?
+  diagnosis       Json? 
+  user            User?    @relation(fields: [userId], references: [id])
+  createdAt       DateTime @default(now())
+  wer             Float?
+}
+
+model TranslationSession {
+  id          String   @id @default(cuid())
+  sourceLang  String
+  targetLang  String
+  startedAt   DateTime @default(now())
+  endedAt     DateTime?
+  recordCount Int      @default(0)
+}
