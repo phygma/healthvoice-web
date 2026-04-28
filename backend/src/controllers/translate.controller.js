@@ -1,12 +1,6 @@
-// Translation pipeline: Audio → ASR → NMT → TTS → Save to DB → Respond
-//
-// This controller is the heart of the project. It coordinates three ML
-// steps in sequence, saves the result as a HealthRecord, and returns
-// everything the frontend needs in one response.
 require('dotenv').config();
 const mlService = require('../services/ml.service');
 const { PrismaClient } = require('@prisma/client');
-const path = require('path');
 const fs = require('fs');
 
 const prisma = new PrismaClient();
@@ -15,7 +9,6 @@ exports.handleTranslate = async (req, res) => {
   const { sourceLang, targetLang, patientName } = req.body;
   const audioFile = req.file;
 
-  // ── Input validation ────────────────────────────────────────────────────
   if (!audioFile) {
     return res.status(400).json({ error: 'No audio file uploaded' });
   }
@@ -48,7 +41,6 @@ exports.handleTranslate = async (req, res) => {
   if (patientName) console.log(`   Patient: ${patientName}`);
 
   try {
-    // ── STEP 1: ASR — audio file → text ─────────────────────────────────
     console.log('   [1/3] Running ASR...');
     const asrResult = await mlService.runASR(audioFile.path, sourceLang);
 
@@ -59,7 +51,6 @@ exports.handleTranslate = async (req, res) => {
     }
     console.log(`   ✅ ASR done in ${asrResult.latencyMs}ms: "${asrResult.text}"`);
 
-    // ── STEP 2: NMT — source text → translated text ──────────────────────
     console.log('   [2/3] Running NMT...');
     const nmtResult = await mlService.runNMT(
       asrResult.text,
@@ -74,12 +65,10 @@ exports.handleTranslate = async (req, res) => {
     }
     console.log(`   ✅ NMT done in ${nmtResult.latencyMs}ms: "${nmtResult.translatedText}"`);
 
-    // ── STEP 3: TTS — translated text → audio file ───────────────────────
     console.log('   [3/3] Running TTS...');
     const ttsResult = await mlService.runTTS(nmtResult.translatedText, targetLang);
     console.log(`   ✅ TTS done in ${ttsResult.latencyMs}ms`);
 
-    // ── STEP 4: Save to DB ───────────────────────────────────────────────
     const record = await prisma.healthRecord.create({
       data: {
         originalText:   asrResult.text,
@@ -93,7 +82,6 @@ exports.handleTranslate = async (req, res) => {
     });
     console.log(`   💾 Saved record: ${record.id}`);
 
-    // ── STEP 5: Respond ─────────────────────────────────────────────────
     const totalMs = asrResult.latencyMs + nmtResult.latencyMs + ttsResult.latencyMs;
     console.log(`   🏁 Done in ${totalMs}ms total\n`);
 
@@ -102,15 +90,13 @@ exports.handleTranslate = async (req, res) => {
       recordId:       record.id,
       originalText:   asrResult.text,
       translatedText: nmtResult.translatedText,
-      audioUrl:       `/audio/${path.basename(ttsResult.audioPath)}`,
+      audioUrl:       ttsResult.audioPath,
       latencyMs:      totalMs,
     });
 
   } catch (err) {
     console.error('❌ Translation pipeline error:', err.message);
 
-    // Clean up uploaded audio file if pipeline failed
-    // No point keeping a file whose record was never saved
     if (audioFile?.path && fs.existsSync(audioFile.path)) {
       fs.unlinkSync(audioFile.path);
     }

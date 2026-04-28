@@ -1,0 +1,244 @@
+.page {
+  min-height: calc(100vh - var(--navbar-height));
+  padding: 40px 0;
+  background: var(--gray-50);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.title {
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: var(--font-size-base);
+  color: var(--gray-500);
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.count {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--gray-500);
+  background: var(--gray-200);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+}
+
+/* States */
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 80px 0;
+  color: var(--gray-500);
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--danger-light);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-md);
+  color: var(--danger);
+  margin-bottom: 24px;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 80px 24px;
+  text-align: center;
+}
+
+.emptyIcon { font-size: 3rem; }
+
+.empty h3 {
+  font-size: var(--font-size-xl);
+  color: var(--gray-700);
+}
+
+.empty p {
+  color: var(--gray-400);
+  margin-bottom: 8px;
+}
+
+/* Records List */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 20px 24px;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover { box-shadow: var(--shadow-lg); }
+
+/* Card Header */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.patientName {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.langPair {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+}
+
+.date {
+  font-size: var(--font-size-sm);
+  color: var(--gray-400);
+}
+
+.cardActions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Text Row */
+.textRow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.textBox {
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+}
+
+.textLabel {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gray-400);
+  margin-bottom: 6px;
+}
+
+.textContent {
+  font-size: var(--font-size-sm);
+  color: var(--gray-700);
+  line-height: 1.5;
+}
+
+.textArrow {
+  font-size: var(--font-size-xl);
+  color: var(--gray-300);
+  padding-top: 28px;
+}
+
+/* Diagnosis Section */
+.diagnosisSection {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--gray-100);
+}
+
+.diagnosisTitle {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--gray-800);
+  margin-bottom: 12px;
+}
+
+.diagnosisGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.diagnosisItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.diagnosisLabel {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gray-400);
+}
+
+.diagnosisValue {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--gray-800);
+}
+
+.noDiagnosis {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--gray-500);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.noDiagnosis a {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .textRow {
+    grid-template-columns: 1fr;
+  }
+  .textArrow { display: none; }
+  .cardMeta { flex-direction: column; align-items: flex-start; gap: 8px; }
+}

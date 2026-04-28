@@ -1,0 +1,129 @@
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--primary-light);
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.headerIcon { font-size: 1.5rem; }
+
+.headerTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  flex: 1;
+  color: var(--gray-900);
+}
+
+.topPrediction {
+  background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.diseaseName {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.confidence {
+  font-size: var(--font-size-sm);
+  color: var(--gray-500);
+}
+
+.sectionLabel {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-400);
+  margin-bottom: 10px;
+}
+
+.conditions {
+  margin-bottom: 20px;
+}
+
+.condition {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.condition:last-child { border-bottom: none; }
+
+.conditionName {
+  font-size: var(--font-size-sm);
+  color: var(--gray-700);
+  font-weight: 500;
+}
+
+.conditionProb {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.symptoms { margin-bottom: 20px; }
+
+.symptomTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.symptomTag {
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.specialist {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.specialistIcon { font-size: 1.5rem; }
+
+.specialistLabel {
+  font-size: var(--font-size-xs);
+  color: var(--gray-400);
+  margin-bottom: 2px;
+}
+
+.specialistName {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--gray-800);
+}
+
+.disclaimer {
+  font-size: var(--font-size-xs);
+  color: var(--gray-400);
+  line-height: 1.6;
+  font-style: italic;
+  border-top: 1px solid var(--gray-100);
+  padding-top: 12px;
+}
