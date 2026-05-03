@@ -51,7 +51,7 @@ app.include_router(translate.router, prefix="/translate", tags=["Translation"])
 app.include_router(tts.router, prefix="/tts", tags=["Text To Speech"])
 app.include_router(asr.router, prefix="/asr", tags=["Speech To Text"])'''
 
-from fastapi import FastAPI
+'''from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from routers import diagnose, translate, tts, asr
@@ -94,6 +94,55 @@ os.makedirs("uploads", exist_ok=True)
 app.mount("/audio", StaticFiles(directory="uploads"), name="audio")
 
 # Routers
+app.include_router(asr.router,       prefix="/asr",      tags=["Speech To Text"])
+app.include_router(translate.router, prefix="/translate", tags=["Translation"])
+app.include_router(tts.router,       prefix="/tts",      tags=["Text To Speech"])
+app.include_router(diagnose.router,  prefix="/diagnose", tags=["Diagnosis"])'''
+
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
+from routers import diagnose, translate, tts, asr
+import os
+
+app = FastAPI(
+    title="HealthVoice ML Service",
+    version="1.0"
+)
+
+# CORS — allow all origins (fine for demo/development)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/")
+def home():
+    return {"message": "HealthVoice ML Service Running"}
+
+@app.get("/health")
+def health():
+    return {
+        "status": "ok",
+        "service": "healthvoice-ml",
+        "components": {
+            "whisper": "loaded",
+            "translator": "ready",
+            "tts": "ready",
+            "diagnosis": "ready"
+        }
+    }
+
+# Ensure uploads folder exists before mounting StaticFiles
+os.makedirs("uploads", exist_ok=True)
+
+# Serve TTS audio files at /audio/filename.mp3
+# Browser streams directly from ML machine via ngrok
+app.mount("/audio", StaticFiles(directory="uploads"), name="audio")
+
+# Register all routers
 app.include_router(asr.router,       prefix="/asr",      tags=["Speech To Text"])
 app.include_router(translate.router, prefix="/translate", tags=["Translation"])
 app.include_router(tts.router,       prefix="/tts",      tags=["Text To Speech"])
